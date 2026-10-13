@@ -233,26 +233,27 @@ window.__ModuleLoader__.load({
       '.bgs-apply:disabled{opacity:.4;cursor:default}',
       '.bgs-apply:focus-visible{outline:2px solid var(--dsw-alias-brand-primary);outline-offset:2px}',
       '.bgs-hint{grid-column:1/-1;margin:0;font-size:11px;line-height:16px;color:var(--dsw-alias-label-secondary)}',
-      /* Sidebar-foot trigger. The box follows the shipped global panel rows
-       * (`hHd-Xa_panelRow`: 36px tall, `radius-md`, `7px 8px` padding, `0 2px`
-       * side margin), so the foot reads as tight as the panel list above it.
-       * Hover paint is the same `--dsw-alias-interactive-bg-hover` the settings
-       * row uses.
+      /* Sidebar-foot trigger. Height and radius follow the settings row below
+       * (`VOzbGW_trigger`: 42px, `radius-md`), so the two seats read as a pair;
+       * the vertical margin is kept tight, since the settings row's own `4px`
+       * row margin left this one looser than the panel rows above it. Hover
+       * paint is the same `--dsw-alias-interactive-bg-hover` both use.
        *
        * The seat is a flex item of `sidebar.footer.action`, which would shrink
-       * it to content width and leave the row's percentage with no basis; the
-       * host claims `width:100%` on itself for the same reason. */
+       * it to content width and leave the row's `calc(100% + 4px)` with no
+       * basis; the host claims `width:100%` on itself for the same reason. */
       '.bgs-foot{flex:none;width:100%;min-width:0}',
       '.bgs-footRow{flex:none;display:flex;align-items:center;gap:8px;width:calc(100% + 4px);margin:1px -2px}',
-      '.bgs-footButton{box-sizing:border-box;display:flex;align-items:center;flex:1;gap:8px;min-width:0;width:auto;min-height:36px;margin:0;padding:7px 8px;border:0;border-radius:var(--dsw-radius-md,8px);background:transparent;color:var(--dsw-alias-label-primary);font:inherit;font-size:14px;line-height:22px;cursor:pointer;overflow:hidden}',
+      '.bgs-footButton{box-sizing:border-box;display:flex;align-items:center;flex:1;gap:8px;min-width:0;width:auto;height:42px;margin:0;padding:0 10px 0 8px;border:0;border-radius:var(--dsw-radius-md,8px);background:transparent;color:var(--dsw-alias-label-primary);font:inherit;font-size:14px;line-height:22px;cursor:pointer;overflow:hidden}',
       '.bgs-footButton:hover{background:var(--dsw-alias-interactive-bg-hover)}',
       '.bgs-footButton:focus-visible{outline:2px solid var(--dsw-alias-brand-primary);outline-offset:-2px}',
       '.bgs-footIcon{flex:none;display:block}',
       '.bgs-footLabel{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}',
-      /* Narrow rail: the seat collapses to one centred 36px icon. */
+      /* Narrow rail: the seat collapses to one centred 36px icon, matching the
+       * settings row's own rail rule. */
       '.bgs-foot[data-wide=false]{width:auto}',
       '.bgs-foot[data-wide=false] .bgs-footRow{width:36px;margin:8px 0 10px}',
-      '.bgs-foot[data-wide=false] .bgs-footButton{flex:none;justify-content:center;gap:0;width:36px;height:36px;min-height:0;margin:0;padding:0}',
+      '.bgs-foot[data-wide=false] .bgs-footButton{flex:none;justify-content:center;gap:0;width:36px;height:36px;margin:0;padding:0}',
       '.bgs-foot[data-wide=false] .bgs-footLabel{display:none}',
       /* The picker panel: a floating surface anchored beside the sidebar foot. */
       '.bgs-panel{position:fixed;z-index:1200;box-sizing:border-box;width:320px;max-width:calc(100vw - 24px);padding:14px;border:.5px solid var(--dsw-alias-border-l2);border-radius:var(--dsw-radius-lg,10px);background:var(--dsw-alias-bg-layer-1);box-shadow:var(--dsw-elevation-prominent,0 8px 24px rgba(0,0,0,.18));color:var(--dsw-alias-label-primary);pointer-events:auto}',

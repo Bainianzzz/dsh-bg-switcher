@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.4
+
+- Keep the 42px box from 2.0.1 and take the tightening from 2.0.3; that release
+  changed both at once. The button is 42px tall again, matching the settings
+  row, with the reduced 1px row margin.
+
 ## 2.0.3
 
 - Tighten the foot trigger's vertical rhythm. It carried the settings row's
