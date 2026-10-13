@@ -4,7 +4,10 @@ A [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) plugin tha
 preference row to **Settings → General**, directly under *Appearance*. Pick a wallpaper preset or paste
 your own image URL: the art fills the window, and the choice is remembered.
 
-<img src="icon.svg" width="72" height="72" alt="Plugin icon">
+<img src="docs/background-row.webp" width="820" alt="Settings → General → Background: the picker shows the current choice (Sakura), the gallery lists every preset, and below it the image-URL field with its Apply button">
+
+*Settings → General → Background. The picker shows the current choice; the gallery and the image-URL
+field sit under it.*
 
 ## What it does
 
@@ -45,6 +48,7 @@ Settings → General → **背景 / Background**, between *外观 / Appearance* 
 | `cordis.patch.yml` | Inserts the `bg-switcher` row into the profile |
 | `locale/*.json` | Display title and description for the Plugin Manager card |
 | `icon.svg` | Plugin card artwork |
+| `docs/background-row.webp` | The screenshot above |
 
 ## How it works
 

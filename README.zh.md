@@ -3,6 +3,10 @@
 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 插件：在 **设置 → 通用** 里、「外观」
 正下方加一行 **背景** 选项。选一个预设色卡，或填入自己的图片地址，背景铺满窗口，选择会被记住。
 
+<img src="docs/background-row.webp" width="820" alt="设置 → 通用 → 背景：选择器显示当前背景（樱花），下方是色卡宫格与图片地址输入框">
+
+*设置 → 通用 → 背景。右上选择器显示当前背景，展开后是色卡宫格与图片地址输入框。*
+
 ## 功能
 
 - 7 个预设：默认、极光、晚霞、深海、森林、石墨、樱花，外加自定义图片地址
@@ -40,6 +44,7 @@ dsh plugin --profile web add /path/to/dsh-bg-switcher
 | `cordis.patch.yml` | 把 `bg-switcher` 这一行插进 profile |
 | `locale/*.json` | 插件管理卡片上的标题与描述 |
 | `icon.svg` | 插件卡片图标 |
+| `docs/background-row.webp` | 上面的截图 |
 
 ## 实现要点
 
