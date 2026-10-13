@@ -256,7 +256,7 @@ window.__ModuleLoader__.load({
       '.bgs-foot[data-wide=false] .bgs-footButton{flex:none;justify-content:center;gap:0;width:36px;height:36px;margin:0;padding:0}',
       '.bgs-foot[data-wide=false] .bgs-footLabel{display:none}',
       /* The picker panel: a floating surface anchored beside the sidebar foot. */
-      '.bgs-panel{position:fixed;z-index:1200;box-sizing:border-box;width:320px;max-width:calc(100vw - 24px);padding:14px;border:.5px solid var(--dsw-alias-border-l2);border-radius:var(--dsw-radius-lg,10px);background:var(--dsw-alias-bg-layer-1);box-shadow:var(--dsw-elevation-prominent,0 8px 24px rgba(0,0,0,.18));color:var(--dsw-alias-label-primary);pointer-events:auto}',
+      '.bgs-panel{position:fixed;z-index:1200;box-sizing:border-box;width:320px;max-width:calc(100vw - 24px);max-height:calc(100vh - 24px);overflow-y:auto;padding:14px;border:.5px solid var(--dsw-alias-border-l2);border-radius:var(--dsw-radius-lg,10px);background:var(--dsw-alias-bg-layer-1);box-shadow:var(--dsw-elevation-prominent,0 8px 24px rgba(0,0,0,.18));color:var(--dsw-alias-label-primary);pointer-events:auto}',
       '.bgs-panelTitle{margin:0 0 10px;font-size:13px;line-height:20px;font-weight:500;color:var(--dsw-alias-label-primary)}',
       '.bgs-panel .bgs-gallery{grid-template-columns:repeat(auto-fill,minmax(72px,1fr))}',
     ].join('');
@@ -397,25 +397,43 @@ window.__ModuleLoader__.load({
       const [anchor, setAnchor] = React.useState(null);
       const rootRef = React.useRef(null);
       const triggerRef = React.useRef(null);
+      const panelRef = React.useRef(null);
 
       React.useEffect(() => subscribeSelection(() => setCurrent(getSelection())), []);
 
       /* The panel rides above every column, so its position is measured from the
-       * trigger each time it opens and on any resize while it is up. */
+       * trigger each time it opens and on any resize while it is up. Its own
+       * height is measured too: the trigger sits at the foot of the sidebar, so
+       * a naive `top = button.top` pushes the gallery off the top of the view. */
       React.useEffect(() => {
         if (!open) return undefined;
         const place = () => {
           const node = triggerRef.current;
           if (!node) return;
           const box = node.getBoundingClientRect();
-          const width = 320;
-          const left = Math.min(Math.max(8, box.right + 8), window.innerWidth - width - 8);
-          const top = Math.min(Math.max(8, box.top - 12), Math.max(8, window.innerHeight - 320));
+          const margin = 8;
+          const width = panelRef.current ? panelRef.current.offsetWidth : 320;
+          const height = panelRef.current ? panelRef.current.offsetHeight : 0;
+          const left = Math.min(
+            Math.max(margin, box.right + margin),
+            Math.max(margin, window.innerWidth - width - margin),
+          );
+          /* Prefer aligning the panel's bottom with the trigger's bottom, then
+           * pull it back inside the viewport whichever way it overflows. */
+          const top = Math.min(
+            Math.max(margin, box.bottom - height),
+            Math.max(margin, window.innerHeight - height - margin),
+          );
           setAnchor({ left, top });
         };
         place();
+        /* A second pass once the panel has reported its size. */
+        const raf = window.requestAnimationFrame(place);
         window.addEventListener('resize', place);
-        return () => window.removeEventListener('resize', place);
+        return () => {
+          window.cancelAnimationFrame(raf);
+          window.removeEventListener('resize', place);
+        };
       }, [open]);
 
       React.useEffect(() => {
@@ -448,6 +466,7 @@ window.__ModuleLoader__.load({
         ? h(
             'div',
             {
+              ref: panelRef,
               className: 'bgs-panel',
               style: { left: anchor.left + 'px', top: anchor.top + 'px' },
               role: 'dialog',

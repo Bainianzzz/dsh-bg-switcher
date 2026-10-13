@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.0.5
+
+- Keep the picker panel inside the viewport. The trigger sits at the foot of the
+  sidebar, so the old placement pushed the panel up off the top of the window and the
+  gallery, the URL field, and the hint were unreachable. The height was also guessed
+  at a fixed 320px where the panel actually measures 368px.
+- Placement now measures the panel and aligns its bottom with the trigger's, pulling it
+  back inside the viewport on either edge, and re-placing once the panel reports its
+  size. The panel bounds its own height to `100vh - 24px` and scrolls if the content is
+  taller than that.
+- Verified in headless Chromium: at 1180x690 the panel lands at y=127 with its bottom
+  flush to the trigger and every control visible; at 500x400 it caps at 233px and
+  scrolls without overflowing.
+
 ## 2.0.4
 
 - Keep the 42px box from 2.0.1 and take the tightening from 2.0.3; that release
