@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.0.1
+
+- The foot trigger now matches the shipped settings row exactly, so the two
+  highlight over the same box on hover. The button was 32px tall with `radius-sm`,
+  `0 8px` padding and a 13px label; it is now 42px with `radius-md`,
+  `0 10px 0 8px` padding and a 14px label, wrapped in the same
+  `calc(100% + 4px)` / `-2px` row the settings seat uses. The rail state is 36x36,
+  matching the settings row's own rail rule. Hover paint was already the same
+  `--dsw-alias-interactive-bg-hover`; only the box differed.
+
 ## 2.0.0
 
 **Breaking:** the picker moved out of Settings. The entry no longer registers into

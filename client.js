@@ -233,15 +233,21 @@ window.__ModuleLoader__.load({
       '.bgs-apply:disabled{opacity:.4;cursor:default}',
       '.bgs-apply:focus-visible{outline:2px solid var(--dsw-alias-brand-primary);outline-offset:2px}',
       '.bgs-hint{grid-column:1/-1;margin:0;font-size:11px;line-height:16px;color:var(--dsw-alias-label-secondary)}',
-      /* Sidebar-foot trigger: matches the shipped settings row (icon + label
-       * when wide, icon only in the 56px rail). */
-      '.bgs-footButton{box-sizing:border-box;display:flex;align-items:center;gap:8px;width:100%;height:32px;padding:0 8px;border:0;border-radius:var(--dsw-radius-sm,6px);background:transparent;color:var(--dsw-alias-label-secondary);font:inherit;font-size:13px;line-height:20px;cursor:pointer}',
-      '.bgs-footButton:hover{background:var(--dsw-alias-interactive-bg-hover);color:var(--dsw-alias-label-primary)}',
+      /* Sidebar-foot trigger. Geometry and hover are copied from the shipped
+       * settings row (`VOzbGW_trigger*` in ui-settings-general) so the two
+       * seats light up over exactly the same box: 42px tall, `radius-md`,
+       * `0 10px 0 8px` padding, 14px label, and the row's own
+       * `calc(100% + 4px)` / `-2px` outward bleed. */
+      '.bgs-footRow{flex:none;display:flex;align-items:center;gap:8px;width:calc(100% + 4px);margin:4px -2px;position:relative}',
+      '.bgs-footButton{box-sizing:border-box;display:flex;align-items:center;flex:1;gap:8px;min-width:0;width:auto;height:42px;margin:0;padding:0 10px 0 8px;border:0;border-radius:var(--dsw-radius-md,8px);background:transparent;color:var(--dsw-alias-label-primary);font:inherit;font-size:14px;line-height:22px;cursor:pointer;overflow:hidden}',
+      '.bgs-footButton:hover{background:var(--dsw-alias-interactive-bg-hover)}',
       '.bgs-footButton:focus-visible{outline:2px solid var(--dsw-alias-brand-primary);outline-offset:-2px}',
       '.bgs-footIcon{flex:none;display:block}',
       '.bgs-footLabel{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}',
-      /* Narrow rail: the seat collapses to one centred icon. */
-      '.bgs-foot[data-wide=false] .bgs-footButton{justify-content:center;width:32px;padding:0}',
+      /* Narrow rail: the seat collapses to one centred 36px icon, matching the
+       * settings row's own rail rule. */
+      '.bgs-foot[data-wide=false] .bgs-footRow{width:36px;margin:8px 0 10px}',
+      '.bgs-foot[data-wide=false] .bgs-footButton{flex:none;justify-content:center;gap:0;width:36px;height:36px;margin:0;padding:0}',
       '.bgs-foot[data-wide=false] .bgs-footLabel{display:none}',
       /* The picker panel: a floating surface anchored beside the sidebar foot. */
       '.bgs-panel{position:fixed;z-index:1200;box-sizing:border-box;width:320px;max-width:calc(100vw - 24px);padding:14px;border:.5px solid var(--dsw-alias-border-l2);border-radius:var(--dsw-radius-lg,10px);background:var(--dsw-alias-bg-layer-1);box-shadow:var(--dsw-elevation-prominent,0 8px 24px rgba(0,0,0,.18));color:var(--dsw-alias-label-primary);pointer-events:auto}',
@@ -454,18 +460,22 @@ window.__ModuleLoader__.load({
           'div',
           { className: 'bgs-foot', 'data-wide': wide ? 'true' : 'false', ref: rootRef },
           h(
-            'button',
-            {
-              ref: triggerRef,
-              type: 'button',
-              className: 'bgs-footButton',
-              'aria-label': t('row.aria'),
-              'aria-expanded': open,
-              title: wide ? undefined : t('footer.label'),
-              onClick: () => setOpen((value) => !value),
-            },
-            frameIcon(16),
-            h('span', { className: 'bgs-footLabel' }, t('footer.label')),
+            'div',
+            { className: 'bgs-footRow' },
+            h(
+              'button',
+              {
+                ref: triggerRef,
+                type: 'button',
+                className: 'bgs-footButton',
+                'aria-label': t('row.aria'),
+                'aria-expanded': open,
+                title: wide ? undefined : t('footer.label'),
+                onClick: () => setOpen((value) => !value),
+              },
+              frameIcon(16),
+              h('span', { className: 'bgs-footLabel' }, t('footer.label')),
+            ),
           ),
           panel,
         ),
