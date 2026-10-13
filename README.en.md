@@ -37,10 +37,11 @@ Install the DSH plugin at https://github.com/Bainianzzz/dsh-bg-switcher:
 > - Settings → Built-in plugins is the read-only inventory; the install entry is the sidebar's Plugins page.
 > - Upgrades are uninstall-then-install for now.
 
-CLI equivalent:
+CLI equivalent (`web` is your profile name):
 
 ```bash
-dsh plugin --profile web add /path/to/dsh-bg-switcher
+git clone https://github.com/Bainianzzz/dsh-bg-switcher ~/dsh-plugins/dsh-bg-switcher
+dsh plugin --profile web add ~/dsh-plugins/dsh-bg-switcher
 ```
 
 Then list the bundle `@local/dsh-bg-switcher` in the profile's `dsh.profile.bundles`.

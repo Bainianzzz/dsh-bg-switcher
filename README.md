@@ -37,10 +37,11 @@ DeepSeek Harness 插件：在 **设置 → 通用**、「外观」下方加一�
 > - 「设置 → 内置插件」是只读清单，安装入口只在侧边栏的「插件」页。
 > - 升级目前需先卸载再安装。
 
-命令行等价做法：
+命令行等价做法（`web` 换成你的 profile 名）：
 
 ```bash
-dsh plugin --profile web add /path/to/dsh-bg-switcher
+git clone https://github.com/Bainianzzz/dsh-bg-switcher ~/dsh-plugins/dsh-bg-switcher
+dsh plugin --profile web add ~/dsh-plugins/dsh-bg-switcher
 ```
 
 装完把组合包名 `@local/dsh-bg-switcher` 加进 profile 的 `dsh.profile.bundles`。
