@@ -1,6 +1,6 @@
 {
   "meta": {
     "title": "Background switcher",
-    "description": "Background preference row in Settings > General, under Appearance"
+    "description": "Switch the window background to a preset or a custom image URL"
   }
 }

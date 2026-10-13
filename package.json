@@ -2,7 +2,7 @@
   "name": "@local/dsh-bg-switcher",
   "version": "1.0.0",
   "type": "module",
-  "description": "DeepSeek Harness plugin: a General-settings preference row that switches the window background",
+  "description": "DeepSeek Harness plugin: switch the window background to a preset or a custom image URL",
   "icon": "./icon.svg",
   "license": "MIT",
   "repository": {
