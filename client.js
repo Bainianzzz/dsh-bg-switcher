@@ -48,7 +48,6 @@ window.__ModuleLoader__.load({
     /** Simplified Chinese dictionary (the key-set source of truth). */
     const zh = {
       'row.title': '背景',
-      'row.desc': '色卡或自定义图片地址',
       'row.aria': '选择窗口背景',
       'gallery.aria': '背景色卡',
       'gallery.hint': '选中的背景铺满窗口，并记住你的选择。',
@@ -63,11 +62,11 @@ window.__ModuleLoader__.load({
       'custom.label': '图片地址',
       'custom.placeholder': 'https://… 或 /path/image.png',
       'custom.apply': '应用',
+      'footer.label': '背景',
     };
     /** English dictionary, key-identical to the Chinese source of truth. */
     const en = {
       'row.title': 'Background',
-      'row.desc': 'A wallpaper preset or a custom image URL',
       'row.aria': 'Choose the window background',
       'gallery.aria': 'Background presets',
       'gallery.hint': 'The chosen background fills the window and is remembered here.',
@@ -82,6 +81,7 @@ window.__ModuleLoader__.load({
       'custom.label': 'Image URL',
       'custom.placeholder': 'https://… or /path/image.png',
       'custom.apply': 'Apply',
+      'footer.label': 'Background',
     };
 
     /**
@@ -214,21 +214,6 @@ window.__ModuleLoader__.load({
 
     /** Row and gallery styling: alias tokens only, namespaced under `.bgs-`. */
     const CSS_TEXT = [
-      '.bgs-group{display:flex;flex-direction:column;gap:12px;padding:16px 0;border-bottom:.5px solid var(--dsw-alias-border-l2)}',
-      '.bgs-head{display:flex;align-items:center;gap:8px}',
-      '.bgs-rowText{display:flex;flex-direction:column;gap:4px;flex:1;min-width:0;padding-right:48px}',
-      '.bgs-rowTitle{color:var(--dsw-alias-label-primary);font-size:14px;line-height:22px}',
-      '.bgs-rowDesc{color:var(--dsw-alias-label-tertiary);font-size:12px;line-height:18px}',
-      '.bgs-control{display:inline-flex;align-items:center;gap:8px}',
-      '.bgs-picker{box-sizing:border-box;display:inline-flex;align-items:center;gap:8px;height:36px;max-width:200px;padding:0 12px;border:.5px solid var(--dsw-alias-border-l2);border-radius:var(--dsw-radius-md,8px);background:var(--dsw-alias-bg-layer-2);color:var(--dsw-alias-label-primary);font:inherit;font-size:13px;line-height:20px;cursor:pointer}',
-      '.bgs-picker:hover{background:var(--dsw-alias-bg-overlay)}',
-      '.bgs-picker:focus-visible{outline:2px solid var(--dsw-alias-brand-primary);outline-offset:1px}',
-      '.bgs-pickerArt{flex:none;width:20px;height:20px;border:.5px solid var(--dsw-alias-border-l2);border-radius:var(--dsw-radius-xs,4px);background-size:cover;background-position:center}',
-      '.bgs-pickerArt[data-plain=true]{background:var(--dsw-alias-bg-layer-1)}',
-      '.bgs-pickerLabel{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}',
-      '.bgs-chevron{flex:none;display:block;transition:transform .12s ease}',
-      '.bgs-chevronOpen{transform:rotate(180deg)}',
-      '@media (prefers-reduced-motion:reduce){.bgs-chevron{transition:none}}',
       '.bgs-gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:8px}',
       '.bgs-swatch{display:flex;flex-direction:column;gap:4px;min-width:0;padding:0;border:0;background:transparent;color:var(--dsw-alias-label-secondary);font:inherit;font-size:11px;line-height:14px;cursor:pointer}',
       '.bgs-swatchArt{display:block;height:44px;border:.5px solid var(--dsw-alias-border-l2);border-radius:var(--dsw-radius-sm,6px);background-size:cover;background-position:center}',
@@ -248,28 +233,54 @@ window.__ModuleLoader__.load({
       '.bgs-apply:disabled{opacity:.4;cursor:default}',
       '.bgs-apply:focus-visible{outline:2px solid var(--dsw-alias-brand-primary);outline-offset:2px}',
       '.bgs-hint{grid-column:1/-1;margin:0;font-size:11px;line-height:16px;color:var(--dsw-alias-label-secondary)}',
+      /* Sidebar-foot trigger: matches the shipped settings row (icon + label
+       * when wide, icon only in the 56px rail). */
+      '.bgs-footButton{box-sizing:border-box;display:flex;align-items:center;gap:8px;width:100%;height:32px;padding:0 8px;border:0;border-radius:var(--dsw-radius-sm,6px);background:transparent;color:var(--dsw-alias-label-secondary);font:inherit;font-size:13px;line-height:20px;cursor:pointer}',
+      '.bgs-footButton:hover{background:var(--dsw-alias-interactive-bg-hover);color:var(--dsw-alias-label-primary)}',
+      '.bgs-footButton:focus-visible{outline:2px solid var(--dsw-alias-brand-primary);outline-offset:-2px}',
+      '.bgs-footIcon{flex:none;display:block}',
+      '.bgs-footLabel{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}',
+      /* Narrow rail: the seat collapses to one centred icon. */
+      '.bgs-foot[data-wide=false] .bgs-footButton{justify-content:center;width:32px;padding:0}',
+      '.bgs-foot[data-wide=false] .bgs-footLabel{display:none}',
+      /* The picker panel: a floating surface anchored beside the sidebar foot. */
+      '.bgs-panel{position:fixed;z-index:1200;box-sizing:border-box;width:320px;max-width:calc(100vw - 24px);padding:14px;border:.5px solid var(--dsw-alias-border-l2);border-radius:var(--dsw-radius-lg,10px);background:var(--dsw-alias-bg-layer-1);box-shadow:var(--dsw-elevation-prominent,0 8px 24px rgba(0,0,0,.18));color:var(--dsw-alias-label-primary);pointer-events:auto}',
+      '.bgs-panelTitle{margin:0 0 10px;font-size:13px;line-height:20px;font-weight:500;color:var(--dsw-alias-label-primary)}',
+      '.bgs-panel .bgs-gallery{grid-template-columns:repeat(auto-fill,minmax(72px,1fr))}',
     ].join('');
 
     /**
-     * The disclosure chevron on the picker control.
-     * @param open - whether the gallery is showing.
+     * The sidebar-foot glyph: a framed picture, matching the neighbouring
+     * settings row's icon weight.
+     * @param size - square edge in pixels.
      */
-    function chevron(open) {
+    function frameIcon(size) {
       return h(
         'svg',
         {
-          className: 'bgs-chevron' + (open ? ' bgs-chevronOpen' : ''),
+          className: 'bgs-footIcon',
           viewBox: '0 0 16 16',
-          width: 12,
-          height: 12,
+          width: size,
+          height: size,
           'aria-hidden': true,
           focusable: false,
         },
-        h('path', {
-          d: 'M4 6.2l4 4 4-4',
+        h('rect', {
+          x: 1.75,
+          y: 2.75,
+          width: 12.5,
+          height: 10.5,
+          rx: 2,
           fill: 'none',
           stroke: 'currentColor',
-          strokeWidth: 1.5,
+          strokeWidth: 1.3,
+        }),
+        h('circle', { cx: 5.9, cy: 6.4, r: 1.15, fill: 'currentColor' }),
+        h('path', {
+          d: 'M2.4 11.2l3.1-2.7 2.3 2 1.9-1.6 3.9 3.2',
+          fill: 'none',
+          stroke: 'currentColor',
+          strokeWidth: 1.3,
           strokeLinecap: 'round',
           strokeLinejoin: 'round',
         }),
@@ -277,22 +288,123 @@ window.__ModuleLoader__.load({
     }
 
     /**
-     * The General-settings preference row: a title, a picker showing the current
-     * background, and the gallery it discloses.
-     * @param props - slot props; `t` comes from the registered locale namespace.
+     * One preset swatch.
+     * @param props - `preset`, `t`, `active`, `onPick`.
      */
-    function BackgroundRow(props) {
+    function Swatch(props) {
+      const { preset, t, active, onPick } = props;
+      return h(
+        'button',
+        {
+          type: 'button',
+          className: 'bgs-swatch' + (active ? ' bgs-swatchActive' : ''),
+          'aria-pressed': active,
+          title: t('preset.' + preset.id),
+          onClick: () => onPick(preset.id),
+        },
+        h('span', {
+          className: 'bgs-swatchArt',
+          style: preset.art ? { backgroundImage: preset.art } : undefined,
+          'data-plain': preset.art ? undefined : 'true',
+        }),
+        h('span', { className: 'bgs-swatchLabel' }, t('preset.' + preset.id)),
+      );
+    }
+
+    /**
+     * The preset grid plus the custom-URL row; the body shared by the settings
+     * row and the sidebar picker panel.
+     * @param props - `t`, `current`, `draft`, `setDraft`, `applyCustom`.
+     */
+    function Gallery(props) {
+      const { t, current, draft, setDraft, applyCustom } = props;
+      return h(
+        'div',
+        { className: 'bgs-gallery', role: 'group', 'aria-label': t('gallery.aria') },
+        PRESETS.map((preset) =>
+          h(Swatch, {
+            key: preset.id,
+            preset,
+            t,
+            active: current.id === preset.id,
+            onPick: (id) => setSelection({ id }),
+          }),
+        ),
+        h(
+          'div',
+          { className: 'bgs-custom' + (current.id === 'custom' ? ' bgs-customActive' : '') },
+          h('label', { className: 'bgs-customLabel', htmlFor: 'bgs-custom-url' }, t('custom.label')),
+          h(
+            'div',
+            { className: 'bgs-customRow' },
+            h('input', {
+              id: 'bgs-custom-url',
+              className: 'bgs-input',
+              type: 'text',
+              spellCheck: false,
+              placeholder: t('custom.placeholder'),
+              value: draft,
+              onChange: (event) => setDraft(event.target.value),
+              onKeyDown: (event) => {
+                if (event.key !== 'Enter') return;
+                event.preventDefault();
+                applyCustom();
+              },
+            }),
+            h(
+              'button',
+              {
+                type: 'button',
+                className: 'bgs-apply',
+                disabled: !urlArt(draft),
+                onClick: applyCustom,
+              },
+              t('custom.apply'),
+            ),
+          ),
+        ),
+        h('p', { className: 'bgs-hint' }, t('gallery.hint')),
+      );
+    }
+
+    /**
+     * The sidebar-foot trigger plus the picker panel it discloses. The panel is
+     * position-fixed beside the foot: the seat itself is as narrow as 56px when
+     * the sidebar collapses, so the gallery cannot live inside it.
+     * @param props - slot props; `wide` and `t` arrive from the slot.
+     */
+    function FooterButton(props) {
       const t = props.t;
+      const wide = props.wide !== false;
       const [current, setCurrent] = React.useState(getSelection);
       const [open, setOpen] = React.useState(false);
       const [draft, setDraft] = React.useState(() => {
         const stored = getSelection();
         return stored.id === 'custom' && stored.url ? stored.url : '';
       });
+      const [anchor, setAnchor] = React.useState(null);
       const rootRef = React.useRef(null);
       const triggerRef = React.useRef(null);
 
       React.useEffect(() => subscribeSelection(() => setCurrent(getSelection())), []);
+
+      /* The panel rides above every column, so its position is measured from the
+       * trigger each time it opens and on any resize while it is up. */
+      React.useEffect(() => {
+        if (!open) return undefined;
+        const place = () => {
+          const node = triggerRef.current;
+          if (!node) return;
+          const box = node.getBoundingClientRect();
+          const width = 320;
+          const left = Math.min(Math.max(8, box.right + 8), window.innerWidth - width - 8);
+          const top = Math.min(Math.max(8, box.top - 12), Math.max(8, window.innerHeight - 320));
+          setAnchor({ left, top });
+        };
+        place();
+        window.addEventListener('resize', place);
+        return () => window.removeEventListener('resize', place);
+      }, [open]);
 
       React.useEffect(() => {
         if (!open) return undefined;
@@ -320,73 +432,17 @@ window.__ModuleLoader__.load({
         setSelection({ id: 'custom', url });
       };
 
-      const renderSwatch = (preset) => {
-        const active = current.id === preset.id;
-        return h(
-          'button',
-          {
-            key: preset.id,
-            type: 'button',
-            className: 'bgs-swatch' + (active ? ' bgs-swatchActive' : ''),
-            'aria-pressed': active,
-            title: t('preset.' + preset.id),
-            onClick: () => {
-              setSelection({ id: preset.id });
-            },
-          },
-          h('span', {
-            className: 'bgs-swatchArt',
-            style: preset.art ? { backgroundImage: preset.art } : undefined,
-            'data-plain': preset.art ? undefined : 'true',
-          }),
-          h('span', { className: 'bgs-swatchLabel' }, t('preset.' + preset.id)),
-        );
-      };
-
-      const currentArt = selectionArt(current);
-      const currentLabel = current.id === 'custom'
-        ? t('preset.custom')
-        : t('preset.' + current.id);
-
-      const gallery = open
+      const panel = open && anchor
         ? h(
             'div',
-            { className: 'bgs-gallery', role: 'group', 'aria-label': t('gallery.aria') },
-            PRESETS.map(renderSwatch),
-            h(
-              'div',
-              { className: 'bgs-custom' + (current.id === 'custom' ? ' bgs-customActive' : '') },
-              h('label', { className: 'bgs-customLabel', htmlFor: 'bgs-custom-url' }, t('custom.label')),
-              h(
-                'div',
-                { className: 'bgs-customRow' },
-                h('input', {
-                  id: 'bgs-custom-url',
-                  className: 'bgs-input',
-                  type: 'text',
-                  spellCheck: false,
-                  placeholder: t('custom.placeholder'),
-                  value: draft,
-                  onChange: (event) => setDraft(event.target.value),
-                  onKeyDown: (event) => {
-                    if (event.key !== 'Enter') return;
-                    event.preventDefault();
-                    applyCustom();
-                  },
-                }),
-                h(
-                  'button',
-                  {
-                    type: 'button',
-                    className: 'bgs-apply',
-                    disabled: !urlArt(draft),
-                    onClick: applyCustom,
-                  },
-                  t('custom.apply'),
-                ),
-              ),
-            ),
-            h('p', { className: 'bgs-hint' }, t('gallery.hint')),
+            {
+              className: 'bgs-panel',
+              style: { left: anchor.left + 'px', top: anchor.top + 'px' },
+              role: 'dialog',
+              'aria-label': t('row.aria'),
+            },
+            h('p', { className: 'bgs-panelTitle' }, t('row.title')),
+            h(Gallery, { t, current, draft, setDraft, applyCustom }),
           )
         : null;
 
@@ -396,40 +452,22 @@ window.__ModuleLoader__.load({
         h('style', { dangerouslySetInnerHTML: { __html: CSS_TEXT } }),
         h(
           'div',
-          { className: 'bgs-group', ref: rootRef },
+          { className: 'bgs-foot', 'data-wide': wide ? 'true' : 'false', ref: rootRef },
           h(
-            'div',
-            { className: 'bgs-head' },
-            h(
-              'div',
-              { className: 'bgs-rowText' },
-              h('div', { className: 'bgs-rowTitle' }, t('row.title')),
-              h('div', { className: 'bgs-rowDesc' }, t('row.desc')),
-            ),
-            h(
-              'div',
-              { className: 'bgs-control' },
-              h(
-                'button',
-                {
-                  ref: triggerRef,
-                  type: 'button',
-                  className: 'bgs-picker',
-                  'aria-label': t('row.aria'),
-                  'aria-expanded': open,
-                  onClick: () => setOpen((value) => !value),
-                },
-                h('span', {
-                  className: 'bgs-pickerArt',
-                  style: currentArt ? { backgroundImage: currentArt } : undefined,
-                  'data-plain': currentArt ? undefined : 'true',
-                }),
-                h('span', { className: 'bgs-pickerLabel' }, currentLabel),
-                chevron(open),
-              ),
-            ),
+            'button',
+            {
+              ref: triggerRef,
+              type: 'button',
+              className: 'bgs-footButton',
+              'aria-label': t('row.aria'),
+              'aria-expanded': open,
+              title: wide ? undefined : t('footer.label'),
+              onClick: () => setOpen((value) => !value),
+            },
+            frameIcon(16),
+            h('span', { className: 'bgs-footLabel' }, t('footer.label')),
           ),
-          gallery,
+          panel,
         ),
       );
     }
@@ -477,17 +515,19 @@ window.__ModuleLoader__.load({
           };
         }, 'bg-switcher: backdrop');
 
-        ctx.slots.inject('settings.general.item', () =>
+        /* Sidebar foot, above the shipped Settings row: the shell renders
+         * `sidebar.footer.action` before `sidebar.settings`, so one entry here
+         * lands directly above Settings. The picker panel rides in this
+         * component as a position-fixed surface, since the seat itself collapses
+         * to a 56px rail. */
+        ctx.slots.inject('sidebar.footer.action', () =>
           ctx.slots.register(
             {
-              name: 'settings.general.item',
+              name: 'sidebar.footer.action',
               id: 'bg-switcher',
-              /* Between `appearance` (10) and `font-size` (11): the row sits
-               * directly under the Appearance preference. */
-              order: 10.5,
               locale: NS,
             },
-            BackgroundRow,
+            FooterButton,
           ),
         );
       },

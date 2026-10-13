@@ -1,6 +1,6 @@
 {
   "meta": {
     "title": "Background switcher",
-    "description": "Switch the window background to a preset or a custom image URL"
+    "description": "A sidebar-foot button that switches the window background to a preset or a custom image URL"
   }
 }

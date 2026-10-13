@@ -6,10 +6,10 @@ English | [中文](README.md)
 [![topic: dsh-plugin](https://img.shields.io/badge/topic-dsh--plugin-4d6bfe)](https://github.com/topics/dsh-plugin)
 [![license: MIT](https://img.shields.io/badge/license-MIT-4d6bfe)](LICENSE)
 
-A DeepSeek Harness plugin: a **Background** row in **Settings → General**, under *Appearance* — seven preset
+A DeepSeek Harness plugin: a **Background** button at the **sidebar foot, above Settings** — seven preset
 wallpapers or your own image URL, filling the window and remembered across reloads.
 
-<img src="docs/background-row.webp" width="820" alt="Settings → General → Background: the picker shows the current choice (Sakura), the gallery lists every preset, and below it the image-URL field">
+<img src="docs/background-row.webp" width="820" alt="The Background button at the sidebar foot, and the preset panel it opens beside the sidebar">
 
 ## Install
 
@@ -22,7 +22,7 @@ Install the DSH plugin at https://github.com/Bainianzzz/dsh-bg-switcher:
 1. clone the repository to ~/dsh-plugins/dsh-bg-switcher;
 2. call the plugin_manager tool with action=install_bundle and that directory's absolute path as target;
 3. confirm the returned application is "applied", otherwise report warnings and error back to me;
-4. use cordis_inspect_query on the Client settings.general.item slot and confirm an entry with id "bg-switcher".
+4. use cordis_inspect_query on the Client sidebar.footer.action slot and confirm an entry with id "bg-switcher".
 ```
 
 ### Manual
@@ -34,11 +34,16 @@ Install the DSH plugin at https://github.com/Bainianzzz/dsh-bg-switcher:
 
 ## How it works
 
+- The entry registers into `sidebar.footer.action`; the shell renders that seat before `sidebar.settings`,
+  so the button lands directly above Settings
+- The seat is about 220px wide expanded and 56px in the rail, too narrow for the gallery, so the picker is a
+  `position:fixed` surface measured from the button and placed beside the sidebar, re-placed on resize
 - The backdrop is painted on `html`; `--dsw-alias-bg-base` is set to `transparent` through
   `ctx.theme.overrideTokens`, so raised surfaces stay opaque
 - Light and dark each get a scrim, the dark one following `html:has(body[data-ds-dark-theme])`
 - The style tag and the token layer are created inside `ctx.effect` and cleaned up with it, so disabling
   the bundle restores the theme default
+- The choice lives in `localStorage` (`dsh.bg-switcher.selection`), so reinstalling or upgrading keeps it
 
 ## License
 
