@@ -1,0 +1,49 @@
+{
+  "name": "@local/dsh-bg-switcher",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "DeepSeek Harness plugin: a General-settings preference row that switches the window background",
+  "icon": "./icon.svg",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bainianzzz/dsh-bg-switcher.git"
+  },
+  "homepage": "https://github.com/Bainianzzz/dsh-bg-switcher#readme",
+  "bugs": "https://github.com/Bainianzzz/dsh-bg-switcher/issues",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "cordis",
+    "deepseek-harness",
+    "background",
+    "wallpaper"
+  ],
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "icon.svg",
+    "locale/*.json",
+    "README.md",
+    "README.zh.md",
+    "LICENSE"
+  ],
+  "dsh": {
+    "bundle": { "patch": "./cordis.patch.yml" },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-ui-theme"
+      ]
+    }
+  }
+}
