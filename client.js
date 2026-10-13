@@ -256,7 +256,11 @@ window.__ModuleLoader__.load({
       '.bgs-foot[data-wide=false] .bgs-footButton{flex:none;justify-content:center;gap:0;width:36px;height:36px;margin:0;padding:0}',
       '.bgs-foot[data-wide=false] .bgs-footLabel{display:none}',
       /* The picker panel: a floating surface anchored beside the sidebar foot. */
-      '.bgs-panel{position:fixed;z-index:1200;box-sizing:border-box;width:320px;max-width:calc(100vw - 24px);max-height:calc(100vh - 24px);overflow-y:auto;padding:14px;border:.5px solid var(--dsw-alias-border-l2);border-radius:var(--dsw-radius-lg,10px);background:var(--dsw-alias-bg-layer-1);box-shadow:var(--dsw-elevation-prominent,0 8px 24px rgba(0,0,0,.18));color:var(--dsw-alias-label-primary);pointer-events:auto}',
+      /* The picker panel: a floating surface anchored beside the sidebar foot.
+       * Only `bottom` and `maxHeight` are set inline, so the height follows the
+       * room the view box actually leaves; no fixed height and no `vh` unit,
+       * which would measure the window rather than the visible area. */
+      '.bgs-panel{position:fixed;z-index:1200;box-sizing:border-box;width:320px;max-width:calc(100vw - 16px);overflow-y:auto;overscroll-behavior:contain;padding:14px;border:.5px solid var(--dsw-alias-border-l2);border-radius:var(--dsw-radius-lg,10px);background:var(--dsw-alias-bg-layer-1);box-shadow:var(--dsw-elevation-prominent,0 8px 24px rgba(0,0,0,.18));color:var(--dsw-alias-label-primary);pointer-events:auto}',
       '.bgs-panelTitle{margin:0 0 10px;font-size:13px;line-height:20px;font-weight:500;color:var(--dsw-alias-label-primary)}',
       '.bgs-panel .bgs-gallery{grid-template-columns:repeat(auto-fill,minmax(72px,1fr))}',
     ].join('');
@@ -401,10 +405,16 @@ window.__ModuleLoader__.load({
 
       React.useEffect(() => subscribeSelection(() => setCurrent(getSelection())), []);
 
-      /* The panel rides above every column, so its position is measured from the
-       * trigger each time it opens and on any resize while it is up. Its own
-       * height is measured too: the trigger sits at the foot of the sidebar, so
-       * a naive `top = button.top` pushes the gallery off the top of the view. */
+      /* The panel rides above every column, so its anchor is measured from the
+       * trigger each time it opens and on any viewport change while it is up.
+       *
+       * Only the edges are computed here, never the height: the panel is told
+       * where its bottom sits (flush with the trigger) and how far down from the
+       * top of the view box it may start, and the browser derives the height
+       * from whatever space that leaves. Measuring a pixel height and clamping
+       * it against `innerHeight` is what clipped the panel before — the view
+       * box is smaller than the window in this shell, and no fixed offset knows
+       * that. */
       React.useEffect(() => {
         if (!open) return undefined;
         const place = () => {
@@ -412,27 +422,42 @@ window.__ModuleLoader__.load({
           if (!node) return;
           const box = node.getBoundingClientRect();
           const margin = 8;
+          const viewport = window.visualViewport;
+          /* The visual viewport is the area actually on screen; fall back to the
+           * layout viewport where it is unavailable. */
+          const viewTop = viewport ? viewport.offsetTop : 0;
+          const viewBottom = viewport ? viewport.offsetTop + viewport.height : window.innerHeight;
+          const viewLeft = viewport ? viewport.offsetLeft : 0;
+          const viewRight = viewport ? viewport.offsetLeft + viewport.width : window.innerWidth;
           const width = panelRef.current ? panelRef.current.offsetWidth : 320;
-          const height = panelRef.current ? panelRef.current.offsetHeight : 0;
           const left = Math.min(
-            Math.max(margin, box.right + margin),
-            Math.max(margin, window.innerWidth - width - margin),
+            Math.max(viewLeft + margin, box.right + margin),
+            Math.max(viewLeft + margin, viewRight - width - margin),
           );
-          /* Prefer aligning the panel's bottom with the trigger's bottom, then
-           * pull it back inside the viewport whichever way it overflows. */
-          const top = Math.min(
-            Math.max(margin, box.bottom - height),
-            Math.max(margin, window.innerHeight - height - margin),
-          );
-          setAnchor({ left, top });
+          /* Bottom flush with the trigger, and never past the bottom edge. */
+          const bottom = Math.max(margin, viewBottom - box.bottom);
+          /* The room between the top edge and the trigger's bottom, less the
+           * margin on each side. Taken as it comes: clamping it to a floor
+           * would push the panel back past the top edge. */
+          const available = box.bottom - viewTop - margin * 2;
+          setAnchor({ left, bottom, maxHeight: Math.max(0, available) });
         };
         place();
-        /* A second pass once the panel has reported its size. */
+        /* A second pass once the panel has reported its width. */
         const raf = window.requestAnimationFrame(place);
         window.addEventListener('resize', place);
+        const viewport = window.visualViewport;
+        if (viewport) {
+          viewport.addEventListener('resize', place);
+          viewport.addEventListener('scroll', place);
+        }
         return () => {
           window.cancelAnimationFrame(raf);
           window.removeEventListener('resize', place);
+          if (viewport) {
+            viewport.removeEventListener('resize', place);
+            viewport.removeEventListener('scroll', place);
+          }
         };
       }, [open]);
 
@@ -468,7 +493,13 @@ window.__ModuleLoader__.load({
             {
               ref: panelRef,
               className: 'bgs-panel',
-              style: { left: anchor.left + 'px', top: anchor.top + 'px' },
+              /* `bottom` and `maxHeight` only: the height falls out of the room
+               * between them, so nothing here assumes a fixed pixel height. */
+              style: {
+                left: anchor.left + 'px',
+                bottom: anchor.bottom + 'px',
+                maxHeight: anchor.maxHeight + 'px',
+              },
               role: 'dialog',
               'aria-label': t('row.aria'),
             },

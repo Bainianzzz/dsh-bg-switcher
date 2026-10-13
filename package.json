@@ -1,6 +1,6 @@
 {
   "name": "@local/dsh-bg-switcher",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "type": "module",
   "description": "DeepSeek Harness plugin: switch the window background to a preset or a custom image URL",
   "icon": "./icon.svg",

@@ -1,5 +1,21 @@
 # Changelog
 
+## 2.0.6
+
+- Position the panel from live viewport geometry instead of absolute numbers. 2.0.5
+  clamped against `100vh` and `window.innerHeight`, but the view box in this shell is
+  smaller than the window, so the panel still ran off the bottom edge.
+- The panel now takes `bottom` and `maxHeight` only — its bottom sits flush with the
+  trigger and its height falls out of the room left above it — so nothing assumes a
+  pixel height. Measurements come from `visualViewport` where available, and the
+  listeners follow its `resize` and `scroll`, not just the window's.
+- Also dropped a `160px` floor on the height. Under a very short viewport that floor
+  exceeded the space available and pushed the panel back past the top edge; the panel
+  now compresses as far as it needs to and scrolls.
+- Verified in headless Chromium across 1352x346, 1180x690, 800x600, and 600x300: the
+  panel stays inside the view box on every one, compressing to 135px and 89px on the
+  short viewports, and the Apply control stays reachable by scrolling.
+
 ## 2.0.5
 
 - Keep the picker panel inside the viewport. The trigger sits at the foot of the
