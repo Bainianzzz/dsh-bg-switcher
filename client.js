@@ -257,10 +257,10 @@ window.__ModuleLoader__.load({
       '.bgs-foot[data-wide=false] .bgs-footLabel{display:none}',
       /* The picker panel: a floating surface anchored beside the sidebar foot. */
       /* The picker panel: a floating surface anchored beside the sidebar foot.
-       * Only `bottom` and `maxHeight` are set inline, so the height follows the
-       * room the view box actually leaves; no fixed height and no `vh` unit,
-       * which would measure the window rather than the visible area. */
-      '.bgs-panel{position:fixed;z-index:1200;box-sizing:border-box;width:320px;max-width:calc(100vw - 16px);overflow-y:auto;overscroll-behavior:contain;padding:14px;border:.5px solid var(--dsw-alias-border-l2);border-radius:var(--dsw-radius-lg,10px);background:var(--dsw-alias-bg-layer-1);box-shadow:var(--dsw-elevation-prominent,0 8px 24px rgba(0,0,0,.18));color:var(--dsw-alias-label-primary);pointer-events:auto}',
+       * Only `left` and `bottom` are set inline, so its height is the gallery's
+       * own; it neither scrolls nor compresses, and a viewport too short to hold
+       * it lets it overflow. */
+      '.bgs-panel{position:fixed;z-index:1200;box-sizing:border-box;width:320px;max-width:calc(100vw - 16px);padding:14px;border:.5px solid var(--dsw-alias-border-l2);border-radius:var(--dsw-radius-lg,10px);background:var(--dsw-alias-bg-layer-1);box-shadow:var(--dsw-elevation-prominent,0 8px 24px rgba(0,0,0,.18));color:var(--dsw-alias-label-primary);pointer-events:auto}',
       '.bgs-panelTitle{margin:0 0 10px;font-size:13px;line-height:20px;font-weight:500;color:var(--dsw-alias-label-primary)}',
       '.bgs-panel .bgs-gallery{grid-template-columns:repeat(auto-fill,minmax(72px,1fr))}',
     ].join('');
@@ -408,13 +408,11 @@ window.__ModuleLoader__.load({
       /* The panel rides above every column, so its anchor is measured from the
        * trigger each time it opens and on any viewport change while it is up.
        *
-       * Only the edges are computed here, never the height: the panel is told
-       * where its bottom sits (flush with the trigger) and how far down from the
-       * top of the view box it may start, and the browser derives the height
-       * from whatever space that leaves. Measuring a pixel height and clamping
-       * it against `innerHeight` is what clipped the panel before — the view
-       * box is smaller than the window in this shell, and no fixed offset knows
-       * that. */
+       * The bottom edge is aligned with the trigger's and the height is the
+       * panel's own; nothing here assumes a pixel height, and the view box comes
+       * from `visualViewport` because it is smaller than the window in this
+       * shell. A viewport too short to hold the panel lets it overflow, which is
+       * accepted: the alternative compresses a gallery that needs its height. */
       React.useEffect(() => {
         if (!open) return undefined;
         const place = () => {
@@ -425,7 +423,6 @@ window.__ModuleLoader__.load({
           const viewport = window.visualViewport;
           /* The visual viewport is the area actually on screen; fall back to the
            * layout viewport where it is unavailable. */
-          const viewTop = viewport ? viewport.offsetTop : 0;
           const viewBottom = viewport ? viewport.offsetTop + viewport.height : window.innerHeight;
           const viewLeft = viewport ? viewport.offsetLeft : 0;
           const viewRight = viewport ? viewport.offsetLeft + viewport.width : window.innerWidth;
@@ -436,11 +433,7 @@ window.__ModuleLoader__.load({
           );
           /* Bottom flush with the trigger, and never past the bottom edge. */
           const bottom = Math.max(margin, viewBottom - box.bottom);
-          /* The room between the top edge and the trigger's bottom, less the
-           * margin on each side. Taken as it comes: clamping it to a floor
-           * would push the panel back past the top edge. */
-          const available = box.bottom - viewTop - margin * 2;
-          setAnchor({ left, bottom, maxHeight: Math.max(0, available) });
+          setAnchor({ left, bottom });
         };
         place();
         /* A second pass once the panel has reported its width. */
@@ -493,12 +486,10 @@ window.__ModuleLoader__.load({
             {
               ref: panelRef,
               className: 'bgs-panel',
-              /* `bottom` and `maxHeight` only: the height falls out of the room
-               * between them, so nothing here assumes a fixed pixel height. */
+              /* Anchored by its bottom; the height is the panel's own. */
               style: {
                 left: anchor.left + 'px',
                 bottom: anchor.bottom + 'px',
-                maxHeight: anchor.maxHeight + 'px',
               },
               role: 'dialog',
               'aria-label': t('row.aria'),

@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.0.7
+
+- Let the panel keep its natural height. 2.0.6 capped it against the room above the
+  trigger and made it scroll, which turned a gallery that needs its height into a
+  cramped scroll box whenever the viewport was short.
+- The panel now takes `left` and `bottom` only: its bottom sits flush with the trigger
+  and its height is the gallery's own, with no cap, no scroll, and no floor. A viewport
+  too short to hold it lets it overflow the top edge, which is accepted.
+- The view box still comes from `visualViewport` rather than `innerHeight`, since the
+  window is larger than the visible area in this shell. That is what stopped the panel
+  running off the bottom edge; it is not a size cap.
+
 ## 2.0.6
 
 - Position the panel from live viewport geometry instead of absolute numbers. 2.0.5
