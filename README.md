@@ -4,7 +4,7 @@ A [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) plugin tha
 preference row to **Settings → General**, directly under *Appearance*. Pick a wallpaper preset or paste
 your own image URL: the art fills the window, and the choice is remembered.
 
-![Background row](icon.svg)
+<img src="icon.svg" width="72" height="72" alt="Plugin icon">
 
 ## What it does
 
