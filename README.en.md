@@ -26,18 +26,30 @@ field sit under it.*
 
 ## Install
 
-In the Harness Web UI: **Settings → Plugins → Add plugin**, then enter this repository:
+The plugin manager lives in the sidebar's **Plugins** page, not in Settings — **Settings → Built-in
+plugins** is the read-only inventory and runtime status of shipped plugins (see the official
+`@deepseek-ai/dsh-client-ui-plugin-manager` package reference).
 
-```
-https://github.com/Bainianzzz/dsh-bg-switcher
-```
+1. Select **Plugins** in the sidebar.
+2. Click **Add plugin** in the page's top-right toolbar; the arrow beside it offers *Install a
+   third-party plugin*, which opens the same dialog.
+3. Enter this repository under *package name or address*:
 
-A local clone works as well — enter the cloned directory path in the same dialog, or install the package
-with the CLI and list the bundle in the profile's `dsh.profile.bundles`:
+   ```
+   https://github.com/Bainianzzz/dsh-bg-switcher
+   ```
 
-```bash
-dsh plugin --profile web add /path/to/dsh-bg-switcher
-```
+   The field takes an npm package name (with an optional version), a Git address, a tarball, or an
+   absolute local path. A GitHub address is checked with `git ls-remote` first (5 s timeout by default);
+   when that fails the dialog offers the mainland China mirror.
+4. Pick a **Registry** if needed, then **Install**. The Host reads what the spec declares and confirms it
+   carries a bundle before pnpm runs.
+5. Finish with **Enable now**. Closing the dialog instead leaves the package installed and switched off —
+   turn it on from its card on the Plugins page.
+
+Upgrades are uninstall-then-install for now. CLI equivalent:
+`dsh plugin --profile web add /path/to/dsh-bg-switcher`, then list the bundle
+(`@local/dsh-bg-switcher`) in the profile's `dsh.profile.bundles`.
 
 ## Where the row shows up
 

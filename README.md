@@ -23,18 +23,26 @@
 
 ## 安装
 
-在 Harness 网页界面：**设置 → 插件 → 添加插件**，填入本仓库地址：
+网页界面里的插件管理入口在**侧边栏的「插件」页**，不在「设置」里 —— 「设置 → 内置插件」只显示内置插件的
+清单与运行状态，是只读的（见官方包文档 `@deepseek-ai/dsh-client-ui-plugin-manager`）。
 
-```
-https://github.com/Bainianzzz/dsh-bg-switcher
-```
+1. 侧边栏选中 **插件 / Plugins**。
+2. 页面右上角点 **添加插件 / Add plugin**；它右侧的箭头里有「安装第三方插件」，打开同一个对话框。
+3. 在「包名或地址」里填入本仓库地址：
 
-也可以先克隆到本机，在同一对话框里填入目录路径，或用命令行安装，再把组合包名加进 profile 的
-`dsh.profile.bundles`：
+   ```
+   https://github.com/Bainianzzz/dsh-bg-switcher
+   ```
 
-```bash
-dsh plugin --profile web add /path/to/dsh-bg-switcher
-```
+   这一栏接受 npm 包名（可带版本）、Git 地址、tarball 与本机绝对路径。填 GitHub 地址时会先做一次
+   `git ls-remote` 连通性检查（默认 5 秒）；失败时对话框提示「无法访问 GitHub」，可改用国内镜像。
+4. 需要时在「安装源」里选源，点 **安装 / Install**。Host 先读取该地址声明的包信息，确认它带组合包，
+   再运行 pnpm。
+5. 安装完成点 **立即启用 / Enable now**。只关闭对话框的话，包已装上但处于关闭状态，可在「插件」页的
+   卡片上打开。
+
+升级当前需要**先卸载再安装**。命令行等价做法：`dsh plugin --profile web add /path/to/dsh-bg-switcher`，
+随后把组合包名 `@local/dsh-bg-switcher` 加进 profile 的 `dsh.profile.bundles`。
 
 ## 出现位置
 
