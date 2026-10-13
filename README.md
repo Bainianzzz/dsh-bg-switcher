@@ -60,13 +60,6 @@ dsh plugin --profile web add /path/to/dsh-bg-switcher
 
 样式标签与 token 覆盖层都在 `ctx.effect` 里创建并返回清理函数，因此停用或卸载组合包会回到主题默认背景。
 
-## 社区与支持
-
-- 反馈或问题：[本仓库 Issues](https://github.com/Bainianzzz/dsh-bg-switcher/issues)；也欢迎到官方
-  [GitHub Discussions](https://github.com/deepseek-ai/deepseek-harness/discussions) 讨论。
-- 加入 [DeepSeek Harness Discord 社区](https://discord.gg/4MrtZUhpxg)。
-- 本仓库带 [`dsh-plugin`](https://github.com/topics/dsh-plugin) 话题，便于在话题页被发现。
-
 ## 许可
 
 MIT
