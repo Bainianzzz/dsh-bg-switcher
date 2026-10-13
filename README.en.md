@@ -6,96 +6,35 @@ English | [中文](README.md)
 [![topic: dsh-plugin](https://img.shields.io/badge/topic-dsh--plugin-4d6bfe)](https://github.com/topics/dsh-plugin)
 [![license: MIT](https://img.shields.io/badge/license-MIT-4d6bfe)](LICENSE)
 
-A [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) plugin that adds a **Background**
-preference row to **Settings → General**, directly under *Appearance*. Pick a wallpaper preset or paste
-your own image URL: the art fills the window, and the choice is remembered.
+A DeepSeek Harness plugin: a **Background** row in **Settings → General**, under *Appearance* — seven
+preset wallpapers or your own image URL, filling the window and remembered across reloads.
 
-<img src="docs/background-row.webp" width="820" alt="Settings → General → Background: the picker shows the current choice (Sakura), the gallery lists every preset, and below it the image-URL field with its Apply button">
-
-*Settings → General → Background. The picker shows the current choice; the gallery and the image-URL
-field sit under it.*
-
-## What it does
-
-- 7 built-in presets — Default, Aurora, Sunset, Ocean, Forest, Graphite, Sakura — plus a custom image URL
-- Light and dark themes each get a matched translucent scrim, so text stays readable over any art
-- The backdrop is painted on the window canvas (`html`), while raised surfaces (cards, menus, popovers,
-  the sidebar fill) keep their opaque theme surfaces
-- The choice persists across reloads (`localStorage`); disabling the bundle restores the theme default
-- Visible text goes through the Client locale service (`bgSwitcher`, zh/en)
+<img src="docs/background-row.webp" width="820" alt="Settings → General → Background: the picker shows the current choice (Sakura), the gallery lists every preset, and below it the image-URL field">
 
 ## Install
-
-### One-shot prompt for your agent
 
 Paste this into the Harness chat:
 
 ```text
 Install the DSH plugin at https://github.com/Bainianzzz/dsh-bg-switcher:
-1. clone the repository with git to ~/dsh-plugins/dsh-bg-switcher;
+1. clone the repository to ~/dsh-plugins/dsh-bg-switcher;
 2. call the plugin_manager tool with action=install_bundle and that directory's absolute path as target;
-3. confirm the returned application is "applied" (otherwise report warnings and error back to me);
+3. confirm the returned application is "applied", otherwise report warnings and error back to me;
 4. use cordis_inspect_query on the Client settings.general.item slot and confirm an entry with id "bg-switcher".
 ```
 
-The Background row then appears under Appearance in Settings → General; a newly installed bundle activates
-without a page reload. Installing changes the profile, so the call needs `danger-full-access` or your
-approval per call, and the `plugin_manager` tool is enabled in Creator mode — use the manual steps below
-when the agent does not have it, or when this deployment has no manageable profile.
-
-### Manual install in the Web UI
-
-The plugin manager lives in the sidebar's **Plugins** page, not in Settings — **Settings → Built-in
-plugins** is the read-only inventory and runtime status of shipped plugins (see the official
-`@deepseek-ai/dsh-client-ui-plugin-manager` package reference).
-
-1. Select **Plugins** in the sidebar.
-2. Click **Add plugin** in the page's top-right toolbar; the arrow beside it offers *Install a
-   third-party plugin*, which opens the same dialog.
-3. Enter this repository under *package name or address*:
-
-   ```
-   https://github.com/Bainianzzz/dsh-bg-switcher
-   ```
-
-   The field takes an npm package name (with an optional version), a Git address, a tarball, or an
-   absolute local path. A GitHub address is checked with `git ls-remote` first (5 s timeout by default);
-   when that fails the dialog offers the mainland China mirror.
-4. Pick a **Registry** if needed, then **Install**. The Host reads what the spec declares and confirms it
-   carries a bundle before pnpm runs.
-5. Finish with **Enable now**. Closing the dialog instead leaves the package installed and switched off —
-   turn it on from its card on the Plugins page.
-
-Upgrades are uninstall-then-install for now. CLI equivalent:
-`dsh plugin --profile web add /path/to/dsh-bg-switcher`, then list the bundle
-(`@local/dsh-bg-switcher`) in the profile's `dsh.profile.bundles`.
-
-## Where the row shows up
-
-Settings → General → **背景 / Background**, between *外观 / Appearance* (order 10) and
-*字号大小 / Font size* (order 11). The row is registered with `order: 10.5`; change that value in
-`client.js` to move it.
-
-## Files
-
-| File | Role |
-| --- | --- |
-| `client.js` | Client half: the preference row, the preset gallery, and the backdrop projection |
-| `index.js` | Host half: empty — the feature is presentation-only, the bundle row only needs to mount |
-| `cordis.patch.yml` | Inserts the `bg-switcher` row into the profile |
-| `locale/*.json` | Display title and description for the Plugin Manager card |
-| `icon.svg` | Plugin card artwork |
-| `docs/background-row.webp` | The screenshot above |
+Manual: sidebar **Plugins** → **Add plugin** (top right) → enter
+`https://github.com/Bainianzzz/dsh-bg-switcher` → **Install** → **Enable now**. Settings → Built-in plugins
+is the read-only inventory, not the install entry; upgrades are uninstall-then-install. CLI:
+`dsh plugin --profile web add <dir>`, then list `@local/dsh-bg-switcher` in the profile's
+`dsh.profile.bundles`.
 
 ## How it works
 
-The backdrop is painted on the `html` element, and `--dsw-alias-bg-base` is overridden to `transparent`
-through `ctx.theme.overrideTokens`, so the window frame lets the art through while every raised surface
-stays opaque. The dark-theme variant follows `html:has(body[data-ds-dark-theme])`, which the theme
-presenter toggles, so a theme switch needs no recompute.
-
-The style tag and the token layer are both created inside `ctx.effect` and returned with their cleanup,
-so disabling or unloading the bundle restores the theme default.
+The backdrop is painted on `html`, and `--dsw-alias-bg-base` is set to `transparent` through
+`ctx.theme.overrideTokens`, so raised surfaces stay opaque. Light and dark each get a scrim, the dark one
+following `html:has(body[data-ds-dark-theme])`. The style tag and the token layer are created inside
+`ctx.effect` and cleaned up with it, so disabling the bundle restores the theme default.
 
 ## License
 
