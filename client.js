@@ -237,7 +237,12 @@ window.__ModuleLoader__.load({
        * settings row (`VOzbGW_trigger*` in ui-settings-general) so the two
        * seats light up over exactly the same box: 42px tall, `radius-md`,
        * `0 10px 0 8px` padding, 14px label, and the row's own
-       * `calc(100% + 4px)` / `-2px` outward bleed. */
+       * `calc(100% + 4px)` / `-2px` outward bleed.
+       *
+       * The seat is a flex item of `sidebar.footer.action`, which would shrink
+       * it to content width and leave the percentage on the row with no basis;
+       * the host claims `width:100%` on itself for the same reason. */
+      '.bgs-foot{flex:none;width:100%;min-width:0}',
       '.bgs-footRow{flex:none;display:flex;align-items:center;gap:8px;width:calc(100% + 4px);margin:4px -2px;position:relative}',
       '.bgs-footButton{box-sizing:border-box;display:flex;align-items:center;flex:1;gap:8px;min-width:0;width:auto;height:42px;margin:0;padding:0 10px 0 8px;border:0;border-radius:var(--dsw-radius-md,8px);background:transparent;color:var(--dsw-alias-label-primary);font:inherit;font-size:14px;line-height:22px;cursor:pointer;overflow:hidden}',
       '.bgs-footButton:hover{background:var(--dsw-alias-interactive-bg-hover)}',
@@ -246,6 +251,7 @@ window.__ModuleLoader__.load({
       '.bgs-footLabel{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}',
       /* Narrow rail: the seat collapses to one centred 36px icon, matching the
        * settings row's own rail rule. */
+      '.bgs-foot[data-wide=false]{width:auto}',
       '.bgs-foot[data-wide=false] .bgs-footRow{width:36px;margin:8px 0 10px}',
       '.bgs-foot[data-wide=false] .bgs-footButton{flex:none;justify-content:center;gap:0;width:36px;height:36px;margin:0;padding:0}',
       '.bgs-foot[data-wide=false] .bgs-footLabel{display:none}',

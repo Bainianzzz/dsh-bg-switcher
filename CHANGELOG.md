@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.0.2
+
+- Fix the foot trigger collapsing to content width (about 70px) instead of
+  filling the sidebar, so its hover highlight was shorter than the settings
+  row's. The seat is a flex item of `sidebar.footer.action`, which shrank it
+  and left the row's `calc(100% + 4px)` with no basis; `width:100%` on the
+  seat restores it. Measured inside the real sidebar wrapper, both rows are
+  now 204x42 at the same offsets.
+
 ## 2.0.1
 
 - The foot trigger now matches the shipped settings row exactly, so the two
