@@ -2,6 +2,10 @@
 
 [English](README.en.md) | 中文
 
+[![DeepSeek Harness](https://img.shields.io/badge/DeepSeek%20Harness-official%20repo-4d6bfe?logo=github&logoColor=white)](https://github.com/deepseek-ai/deepseek-harness)
+[![topic: dsh-plugin](https://img.shields.io/badge/topic-dsh--plugin-4d6bfe)](https://github.com/topics/dsh-plugin)
+[![license: MIT](https://img.shields.io/badge/license-MIT-4d6bfe)](LICENSE)
+
 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 插件：在 **设置 → 通用** 里、「外观」
 正下方加一行 **背景** 选项。选一个预设色卡，或填入自己的图片地址，背景铺满窗口，选择会被记住。
 
@@ -55,6 +59,13 @@ dsh plugin --profile web add /path/to/dsh-bg-switcher
 `html:has(body[data-ds-dark-theme])` 跟随，主题切换无需重算。
 
 样式标签与 token 覆盖层都在 `ctx.effect` 里创建并返回清理函数，因此停用或卸载组合包会回到主题默认背景。
+
+## 社区与支持
+
+- 反馈或问题：[本仓库 Issues](https://github.com/Bainianzzz/dsh-bg-switcher/issues)；也欢迎到官方
+  [GitHub Discussions](https://github.com/deepseek-ai/deepseek-harness/discussions) 讨论。
+- 加入 [DeepSeek Harness Discord 社区](https://discord.gg/4MrtZUhpxg)。
+- 本仓库带 [`dsh-plugin`](https://github.com/topics/dsh-plugin) 话题，便于在话题页被发现。
 
 ## 许可
 

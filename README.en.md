@@ -2,6 +2,10 @@
 
 English | [中文](README.md)
 
+[![DeepSeek Harness](https://img.shields.io/badge/DeepSeek%20Harness-official%20repo-4d6bfe?logo=github&logoColor=white)](https://github.com/deepseek-ai/deepseek-harness)
+[![topic: dsh-plugin](https://img.shields.io/badge/topic-dsh--plugin-4d6bfe)](https://github.com/topics/dsh-plugin)
+[![license: MIT](https://img.shields.io/badge/license-MIT-4d6bfe)](LICENSE)
+
 A [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) plugin that adds a **Background**
 preference row to **Settings → General**, directly under *Appearance*. Pick a wallpaper preset or paste
 your own image URL: the art fills the window, and the choice is remembered.
@@ -61,6 +65,13 @@ presenter toggles, so a theme switch needs no recompute.
 
 The style tag and the token layer are both created inside `ctx.effect` and returned with their cleanup,
 so disabling or unloading the bundle restores the theme default.
+
+## Community and support
+
+- Feedback and problems: this repository's [Issues](https://github.com/Bainianzzz/dsh-bg-switcher/issues);
+  the official [GitHub Discussions](https://github.com/deepseek-ai/deepseek-harness/discussions) works too.
+- Join the [DeepSeek Harness Discord community](https://discord.gg/4MrtZUhpxg).
+- This repository carries the [`dsh-plugin`](https://github.com/topics/dsh-plugin) topic for discoverability.
 
 ## License
 
