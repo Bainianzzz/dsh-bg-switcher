@@ -23,6 +23,24 @@
 
 ## 安装
 
+### 交给 agent（一次指令）
+
+把下面这段发给你在 Harness 里的 agent：
+
+```text
+安装 DSH 插件 https://github.com/Bainianzzz/dsh-bg-switcher：
+1. 用 git 把仓库克隆到 ~/dsh-plugins/dsh-bg-switcher；
+2. 调用 plugin_manager 工具，action=install_bundle，target 填该目录的绝对路径；
+3. 确认返回值里 application 为 applied（若不是，把 warnings 与 error 报给我）；
+4. 用 cordis_inspect_query 查客户端 settings.general.item 插槽，确认出现 id 为 bg-switcher 的条目。
+```
+
+装好后「设置 → 通用」里、「外观」下方出现「背景」一行；新装的组合包即时生效，页面刷新与否都可以。
+插件安装会改动 profile，需要 danger-full-access 或对你的逐次批准；`plugin_manager` 工具在 Creator 模式
+下开启，agent 若没有这个工具，或者提示「本部署没有可管理的 profile」，请按下面的手动步骤安装。
+
+### 在网页界面手动安装
+
 网页界面里的插件管理入口在**侧边栏的「插件」页**，不在「设置」里 —— 「设置 → 内置插件」只显示内置插件的
 清单与运行状态，是只读的（见官方包文档 `@deepseek-ai/dsh-client-ui-plugin-manager`）。
 

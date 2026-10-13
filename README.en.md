@@ -26,6 +26,25 @@ field sit under it.*
 
 ## Install
 
+### One-shot prompt for your agent
+
+Paste this into the Harness chat:
+
+```text
+Install the DSH plugin at https://github.com/Bainianzzz/dsh-bg-switcher:
+1. clone the repository with git to ~/dsh-plugins/dsh-bg-switcher;
+2. call the plugin_manager tool with action=install_bundle and that directory's absolute path as target;
+3. confirm the returned application is "applied" (otherwise report warnings and error back to me);
+4. use cordis_inspect_query on the Client settings.general.item slot and confirm an entry with id "bg-switcher".
+```
+
+The Background row then appears under Appearance in Settings → General; a newly installed bundle activates
+without a page reload. Installing changes the profile, so the call needs `danger-full-access` or your
+approval per call, and the `plugin_manager` tool is enabled in Creator mode — use the manual steps below
+when the agent does not have it, or when this deployment has no manageable profile.
+
+### Manual install in the Web UI
+
 The plugin manager lives in the sidebar's **Plugins** page, not in Settings — **Settings → Built-in
 plugins** is the read-only inventory and runtime status of shipped plugins (see the official
 `@deepseek-ai/dsh-client-ui-plugin-manager` package reference).
