@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.0.3
+
+- Tighten the foot trigger's vertical rhythm. It carried the settings row's
+  42px box and `4px` row margin, which read as loose next to the global panel
+  rows above it. The box now follows `hHd-Xa_panelRow` instead: 36px tall,
+  `7px 8px` padding, kept full width so the hover highlight still spans the
+  column. Measured against the shipped panel rows, the gap is 5px where they
+  use 4px, against 10px before.
+
 ## 2.0.2
 
 - Fix the foot trigger collapsing to content width (about 70px) instead of
