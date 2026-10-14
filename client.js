@@ -209,6 +209,16 @@ window.__ModuleLoader__.load({
      * band across its lower edge would cut the picture off, so that case keeps
      * the all-transparent behavior as well.
      *
+     * The active phase only, which is the phase the band itself belongs to. The
+     * host paints its band from `.wSkVaW_root[data-phase=active]
+     * .wSkVaW_composerSeat`, and the new-conversation screen is `hero`: no
+     * transcript behind the composer, so nothing to fade out and nothing the
+     * base token was hiding. An ungated refill put an opaque strip across the
+     * art there, under a composer with nothing under it. The two attributes
+     * named here are the host's own gate — `data-phase` on the root, and
+     * `data-content-phase` on the embedded body — so the refill holds exactly
+     * where the band it stands in for exists.
+     *
      * `!important` is needed because the host reaches the seat through
      * `.wSkVaW_root[data-phase=active] .wSkVaW_composerSeat`, which a
      * class-name-fragment selector cannot outrank. The fragment is a host
@@ -216,7 +226,7 @@ window.__ModuleLoader__.load({
      * to the transparent behavior, which is the shipped behavior rather than a
      * new defect.
      */
-    const REFILL = 'html [class*="_composerSeat"]{background:linear-gradient(180deg,color-mix(in srgb,var(--dsw-alias-bg-layer-1) 0%,transparent) 0px,var(--dsw-alias-bg-layer-1) 36px)!important}';
+    const REFILL = 'html [data-phase=active] [class*="_composerSeat"],html [data-content-phase=active] [class*="_composerSeat"]{background:linear-gradient(180deg,color-mix(in srgb,var(--dsw-alias-bg-layer-1) 0%,transparent) 0px,var(--dsw-alias-bg-layer-1) 36px)!important}';
 
     /**
      * The stylesheet for one selection: the art on the canvas element, with a

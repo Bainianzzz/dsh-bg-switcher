@@ -17,6 +17,12 @@
   the tool-catalog block — keep their transparent fill, because filling them turned every
   line of the transcript into an opaque slab. Custom images get no refill at all: an
   opaque band across the lower edge of someone's own picture cuts it off.
+- Gate that refill on the active phase. The band exists to fade scrolled content out from
+  behind the composer, and on the new-conversation screen — the host's `hero` phase — the
+  host paints no band, the composer is centered with nothing behind it, and the refill
+  laid an opaque strip across the art. The gate names the host's own two attributes,
+  `data-phase` on the root and `data-content-phase` on the embedded body, so the refill
+  holds exactly where the band it stands in for exists.
 - Take the sidebar-foot glyph from Lucide's `image` icon, geometry unmodified — a 24-unit
   box with `stroke-width: 2`, which drawn at 16px lands on 1.33px, the weight the
   neighbouring settings row's icon carries. The hand-drawn frame, sun and ridge are gone.
