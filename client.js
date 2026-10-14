@@ -15,28 +15,28 @@ window.__ModuleLoader__.load({
     /**
      * Backdrop art, one CSS background-image list per preset. Art carries the
      * colors; the readability scrim is added per color scheme in backdropCss.
+     *
+     * Every preset is a pale wash: two or three soft highlight blooms over a
+     * light three-stop base, the shape Sakura set. The tints stay near the top
+     * of the range so no preset reads darker than another.
      */
     const PRESETS = [
       { id: 'default', art: null },
       {
         id: 'aurora',
-        art: 'radial-gradient(120% 90% at 10% 6%, rgba(110,231,249,0.85) 0%, rgba(110,231,249,0) 55%), radial-gradient(110% 95% at 92% 10%, rgba(167,139,250,0.8) 0%, rgba(167,139,250,0) 58%), radial-gradient(130% 110% at 50% 104%, rgba(52,211,153,0.75) 0%, rgba(52,211,153,0) 62%), linear-gradient(160deg, #0b1224, #16233d 55%, #0f1728)',
+        art: 'radial-gradient(120% 90% at 10% 6%, rgba(165,243,252,0.85) 0%, rgba(165,243,252,0) 55%), radial-gradient(110% 95% at 92% 10%, rgba(221,214,254,0.8) 0%, rgba(221,214,254,0) 58%), radial-gradient(130% 110% at 50% 104%, rgba(167,243,208,0.7) 0%, rgba(167,243,208,0) 62%), linear-gradient(160deg, #f2fdff, #eef7ff 55%, #f7f2ff)',
       },
       {
         id: 'sunset',
-        art: 'radial-gradient(120% 90% at 88% 8%, rgba(253,186,116,0.9) 0%, rgba(253,186,116,0) 55%), radial-gradient(120% 100% at 10% 20%, rgba(244,114,182,0.75) 0%, rgba(244,114,182,0) 58%), linear-gradient(180deg, #3b1d4b, #7c3050 52%, #b4573f)',
+        art: 'radial-gradient(120% 90% at 88% 8%, rgba(254,215,170,0.85) 0%, rgba(254,215,170,0) 55%), radial-gradient(120% 100% at 10% 20%, rgba(251,207,232,0.7) 0%, rgba(251,207,232,0) 58%), linear-gradient(180deg, #fff8f0, #ffeef3 52%, #fff2ea)',
       },
       {
         id: 'ocean',
-        art: 'radial-gradient(120% 90% at 20% 10%, rgba(56,189,248,0.55) 0%, rgba(56,189,248,0) 60%), radial-gradient(140% 120% at 80% 100%, rgba(30,64,175,0.85) 0%, rgba(30,64,175,0) 65%), linear-gradient(180deg, #06121f, #0b2b45 60%, #04101c)',
+        art: 'radial-gradient(120% 90% at 20% 10%, rgba(186,230,253,0.85) 0%, rgba(186,230,253,0) 60%), radial-gradient(140% 120% at 80% 100%, rgba(191,219,254,0.8) 0%, rgba(191,219,254,0) 65%), linear-gradient(180deg, #f2faff, #eaf3ff 60%, #f4f9ff)',
       },
       {
         id: 'forest',
-        art: 'radial-gradient(120% 90% at 15% 12%, rgba(134,239,172,0.6) 0%, rgba(134,239,172,0) 58%), radial-gradient(120% 100% at 88% 90%, rgba(22,101,52,0.9) 0%, rgba(22,101,52,0) 62%), linear-gradient(165deg, #04140d, #0d3320 55%, #05170f)',
-      },
-      {
-        id: 'graphite',
-        art: 'repeating-linear-gradient(135deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 2px, rgba(255,255,255,0) 2px, rgba(255,255,255,0) 6px), radial-gradient(120% 100% at 20% 0%, rgba(148,163,184,0.35) 0%, rgba(148,163,184,0) 60%), linear-gradient(180deg, #14161a, #1f2228 60%, #101215)',
+        art: 'radial-gradient(120% 90% at 15% 12%, rgba(187,247,208,0.85) 0%, rgba(187,247,208,0) 58%), radial-gradient(120% 100% at 88% 90%, rgba(167,243,208,0.75) 0%, rgba(167,243,208,0) 62%), linear-gradient(165deg, #f3fdf7, #ecfcf2 55%, #f5fdf9)',
       },
       {
         id: 'sakura',
@@ -56,7 +56,6 @@ window.__ModuleLoader__.load({
       'preset.sunset': '晚霞',
       'preset.ocean': '深海',
       'preset.forest': '森林',
-      'preset.graphite': '石墨',
       'preset.sakura': '樱花',
       'preset.custom': '自定义图片',
       'custom.label': '图片地址',
@@ -75,7 +74,6 @@ window.__ModuleLoader__.load({
       'preset.sunset': 'Sunset',
       'preset.ocean': 'Ocean',
       'preset.forest': 'Forest',
-      'preset.graphite': 'Graphite',
       'preset.sakura': 'Sakura',
       'preset.custom': 'Custom image',
       'custom.label': 'Image URL',

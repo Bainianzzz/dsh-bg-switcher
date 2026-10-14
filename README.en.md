@@ -6,8 +6,8 @@ English | [中文](README.md)
 [![topic: dsh-plugin](https://img.shields.io/badge/topic-dsh--plugin-4d6bfe)](https://github.com/topics/dsh-plugin)
 [![license: MIT](https://img.shields.io/badge/license-MIT-4d6bfe)](LICENSE)
 
-A DeepSeek Harness plugin: a **Background** button at the **sidebar foot, above Settings** — seven preset
-wallpapers or your own image URL, filling the window and remembered across reloads.
+A DeepSeek Harness plugin: a **Background** button at the **sidebar foot, above Settings** — six preset
+swatches or your own image URL, filling the window and remembered across reloads.
 
 <img src="docs/background-row.webp" width="820" alt="The Background button at the sidebar foot, and the preset panel it opens beside the sidebar">
 

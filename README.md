@@ -6,7 +6,7 @@
 [![topic: dsh-plugin](https://img.shields.io/badge/topic-dsh--plugin-4d6bfe)](https://github.com/topics/dsh-plugin)
 [![license: MIT](https://img.shields.io/badge/license-MIT-4d6bfe)](LICENSE)
 
-DeepSeek Harness 插件：在 **侧边栏底部、「设置」上方** 加一个「背景」按钮，点开可选 7 个预设色卡或自定义图片地址，
+DeepSeek Harness 插件：在 **侧边栏底部、「设置」上方** 加一个「背景」按钮，点开可选 6 个预设色卡或自定义图片地址，
 铺满窗口并记住选择。
 
 <img src="docs/background-row.webp" width="820" alt="侧边栏底部的背景按钮，以及它右侧弹出的色卡面板">
