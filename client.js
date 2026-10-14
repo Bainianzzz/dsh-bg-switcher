@@ -11,7 +11,6 @@ window.__ModuleLoader__.load({
     /** Durable choice; a presentation preference, so it stays in this browser. */
     const STORAGE_KEY = 'dsh.bg-switcher.selection';
     const DEFAULT_SELECTION = { id: 'default' };
-
     /**
      * Backdrop art, one CSS background-image list per preset. Art carries the
      * colors; the readability scrim is added per color scheme in backdropCss.
@@ -193,6 +192,33 @@ window.__ModuleLoader__.load({
     }
 
     /**
+     * The fill given back to one host surface: the composer seat, the band
+     * under the composer whose gradient fades scrolled content out. With a
+     * preset art on, `--dsw-alias-bg-base` is `transparent` — that is what lets
+     * the art show — so that band would sit on bare art and the text behind the
+     * composer would read through it. `--dsw-alias-bg-layer-1` is the nearest
+     * token that stays opaque in both schemes (light `#fff`, dark `#232324`).
+     *
+     * The seat alone. The transcript's own sticky surfaces — the disclosure
+     * rows that carry `data-disclosure-row` on every row, the compaction
+     * header, the tool-catalog block — also paint with the base token, but
+     * they are content, not chrome, and filling them turned every line of the
+     * transcript into an opaque slab. They keep the shipped transparent fill.
+     *
+     * Presets only: a custom image is the user's own picture, and an opaque
+     * band across its lower edge would cut the picture off, so that case keeps
+     * the all-transparent behavior as well.
+     *
+     * `!important` is needed because the host reaches the seat through
+     * `.wSkVaW_root[data-phase=active] .wSkVaW_composerSeat`, which a
+     * class-name-fragment selector cannot outrank. The fragment is a host
+     * internal: if it is renamed the rule stops matching and the seat returns
+     * to the transparent behavior, which is the shipped behavior rather than a
+     * new defect.
+     */
+    const REFILL = 'html [class*="_composerSeat"]{background:linear-gradient(180deg,color-mix(in srgb,var(--dsw-alias-bg-layer-1) 0%,transparent) 0px,var(--dsw-alias-bg-layer-1) 36px)!important}';
+
+    /**
      * The stylesheet for one selection: the art on the canvas element, with a
      * scheme-matched scrim, so the frame's own surfaces can stay transparent.
      * @param current - the active selection.
@@ -204,10 +230,12 @@ window.__ModuleLoader__.load({
       const paint = (scheme, color) =>
         'html{background-color:' + color + ';background-image:' + scrim(scheme) + ',' + art +
         ';background-size:cover;background-position:center;background-repeat:no-repeat;background-attachment:fixed}';
-      return [
+      const rules = [
         paint('light', '#ffffff'),
         'html:has(body[data-ds-dark-theme]){background-image:' + scrim('dark') + ',' + art + ';background-color:#0b0d12}',
-      ].join('\n');
+      ];
+      if (PRESET_BY_ID.has(current.id)) rules.push(REFILL);
+      return rules.join('\n');
     }
 
     /** Row and gallery styling: alias tokens only, namespaced under `.bgs-`. */
@@ -264,8 +292,13 @@ window.__ModuleLoader__.load({
     ].join('');
 
     /**
-     * The sidebar-foot glyph: a framed picture, matching the neighbouring
-     * settings row's icon weight.
+     * The sidebar-foot glyph: Lucide's `image` icon, inlined so the plugin
+     * keeps shipping no icon dependency. Geometry is upstream's, unmodified —
+     * a 24-unit box with `stroke-width: 2`, round caps and joins — drawn at
+     * 16px, which lands the stroke on 1.33px, the weight the neighbouring
+     * settings row's own icon carries.
+     *
+     * Source: https://github.com/lucide-icons/lucide/blob/main/icons/image.svg
      * @param size - square edge in pixels.
      */
     function frameIcon(size) {
@@ -273,31 +306,20 @@ window.__ModuleLoader__.load({
         'svg',
         {
           className: 'bgs-footIcon',
-          viewBox: '0 0 16 16',
+          viewBox: '0 0 24 24',
           width: size,
           height: size,
+          fill: 'none',
+          stroke: 'currentColor',
+          strokeWidth: 2,
+          strokeLinecap: 'round',
+          strokeLinejoin: 'round',
           'aria-hidden': true,
           focusable: false,
         },
-        h('rect', {
-          x: 1.75,
-          y: 2.75,
-          width: 12.5,
-          height: 10.5,
-          rx: 2,
-          fill: 'none',
-          stroke: 'currentColor',
-          strokeWidth: 1.3,
-        }),
-        h('circle', { cx: 5.9, cy: 6.4, r: 1.15, fill: 'currentColor' }),
-        h('path', {
-          d: 'M2.4 11.2l3.1-2.7 2.3 2 1.9-1.6 3.9 3.2',
-          fill: 'none',
-          stroke: 'currentColor',
-          strokeWidth: 1.3,
-          strokeLinecap: 'round',
-          strokeLinejoin: 'round',
-        }),
+        h('rect', { width: 18, height: 18, x: 3, y: 3, rx: 2, ry: 2 }),
+        h('circle', { cx: 9, cy: 9, r: 2 }),
+        h('path', { d: 'm21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21' }),
       );
     }
 

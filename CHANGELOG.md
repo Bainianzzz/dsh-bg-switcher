@@ -1,5 +1,27 @@
 # Changelog
 
+## 2.1.0
+
+- Drop Graphite and repaint Aurora, Sunset, Ocean and Forest as pale washes in Sakura's
+  shape: two or three soft highlight blooms over a light three-stop base. The four dark
+  saturated tiles fought the surfaces they sat behind and made the panel read as two
+  unrelated sets. A browser still holding Graphite falls back to the theme default, since
+  `readSelection` keeps only ids the preset table still names.
+- Give the composer seat's fade-out band back while a preset is on. Showing the art means
+  setting `--dsw-alias-bg-base` to `transparent`, and the seat paints its band with that
+  same token, so the band went empty and the stats strip stood on bare art with the
+  transcript reading through it. The band now paints from `--dsw-alias-bg-layer-1`, which
+  stays opaque in both schemes.
+- Refill the seat and nothing else. The transcript's own base-token surfaces — the
+  disclosure rows that carry `data-disclosure-row` on every row, the compaction header,
+  the tool-catalog block — keep their transparent fill, because filling them turned every
+  line of the transcript into an opaque slab. Custom images get no refill at all: an
+  opaque band across the lower edge of someone's own picture cuts it off.
+- Take the sidebar-foot glyph from Lucide's `image` icon, geometry unmodified — a 24-unit
+  box with `stroke-width: 2`, which drawn at 16px lands on 1.33px, the weight the
+  neighbouring settings row's icon carries. The hand-drawn frame, sun and ridge are gone.
+- README and the market entry follow the preset table: six swatches, five of them art.
+
 ## 2.0.8
 
 - Move the package off the unpublished `@local` scope to `@bainianzzz/dsh-bg-switcher`.
