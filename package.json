@@ -1,6 +1,6 @@
 {
-  "name": "@local/dsh-bg-switcher",
-  "version": "2.0.7",
+  "name": "@bainianzzz/dsh-bg-switcher",
+  "version": "2.0.8",
   "type": "module",
   "description": "DeepSeek Harness plugin: switch the window background to a preset or a custom image URL",
   "icon": "./icon.svg",
@@ -29,6 +29,7 @@
     "index.js",
     "client.js",
     "cordis.patch.yml",
+    "screenshots.json",
     "icon.svg",
     "locale/*.json",
     "docs/*.webp",

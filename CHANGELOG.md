@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.0.8
+
+- Move the package off the unpublished `@local` scope to `@bainianzzz/dsh-bg-switcher`.
+  `@local` is not a scope anyone can publish under, so the name in `package.json` could
+  never be the name on the registry; the module id in `client.js` and the entry name in
+  `cordis.patch.yml` follow it, since all three name the same package.
+- Declare the README screenshot in `screenshots.json` so market storefronts show the
+  image the README already leads with, instead of extracting one on their own. Add the
+  file to `files` so it ships with the package.
+
 ## 2.0.7
 
 - Let the panel keep its natural height. 2.0.6 capped it against the room above the

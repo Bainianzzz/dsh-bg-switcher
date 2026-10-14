@@ -1,11 +1,11 @@
 window.__ModuleLoader__.load({
-  id: '@local/dsh-bg-switcher',
+  id: '@bainianzzz/dsh-bg-switcher',
   factory(require) {
     const React = require('react');
     const h = React.createElement;
 
     /** Package id: module id, style-tag owner, and the theme override layer id. */
-    const PLUGIN_ID = '@local/dsh-bg-switcher';
+    const PLUGIN_ID = '@bainianzzz/dsh-bg-switcher';
     /** Locale namespace owning this plugin's visible text. */
     const NS = 'bgSwitcher';
     /** Durable choice; a presentation preference, so it stays in this browser. */
